@@ -1,0 +1,6 @@
+- hosts: app-vm
+  remote_user: root
+  roles:
+    - nginx
+    - haproxy
+

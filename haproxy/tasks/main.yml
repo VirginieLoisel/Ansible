@@ -1,0 +1,27 @@
+---
+# tasks file for haproxy
+- name: install haproxy
+  package:
+    name: haproxy
+    state: present
+
+- name: enable haproxy
+  systemd:
+    name: haproxy
+    enabled: yes
+    state: started
+
+- name: copy haproxy config file haproxy.cfg
+  copy:
+    src: files/haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  notify: reload haproxy
+
+- name: configure firewall to authorize http and https
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - http
+    - https

@@ -1,0 +1,33 @@
+---
+# tasks file for nginx
+- name: install epel-release
+  package:
+    name: epel-release
+    state: present
+
+- name: install nginx
+  package:
+    name: nginx
+    state: present
+
+- name: enable nginx
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: change nginx port 
+  replace: 
+    path: "/etc/nginx/nginx.conf"
+    regexp: " 80 "
+    replace: " 8080 "
+  notify: reload nginx
+
+- name: change nginx port 
+  replace: 
+    path: "/etc/nginx/nginx.conf"
+    regexp: ":80 "
+    replace: ":8080 "
+  notify: reload nginx
+
+
